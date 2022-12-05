@@ -197,7 +197,7 @@ def Jeu():
     Vaisseau=Canevas.create_image(0,0,anchor=NW,image=Dab)
     Canevas.bin('1',Clavier)
     #Création Ilots de défense
-    Ilots[]
+    Ilots=[]
     XIlot=45
     YIlot=600
     for i in range (0,54):
@@ -317,7 +317,7 @@ LabelScore=Label(Mafenetre,textvariable=x,fg='black' bg='white')
 #Affichage vies
 y=StringVar()
 y.set(vies())
-LabelVies=Label(Mafenetre,textvariable=y,fg='balck bg='white')
+LabelVies=Label(Mafenetre,textvariable=y,fg='balck' bg='white')
 
 #Mise en page
 LabelScore.grid(row=1,column=1,sticky=W)
