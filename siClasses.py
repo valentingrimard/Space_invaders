@@ -24,47 +24,88 @@ import tkinter as tk
 #    """
 #    def __init__(self):
 
-class Screen:
+class Screen():
     """
     Classe permettant de créer le canvas
     """
     def __init__(self):
+        """
+        title : Titre de la fenêtre
+        geometry : Taille de la fenêtre
+        minsize et maxsize : En donnant la même valeur à minsize et maxsize on a une fenêtre qui ne peut pas être agrandie ni réduite à la main
+        config : Permet de configurer la fenêtre, notamment la couleur du fond
+        """
         self.window = tk.Tk()
         self.window.title("Space Invaders")
         self.window.geometry("800x800")
         self.window.minsize(800, 800)
         self.window.maxsize(800, 800)
-        self.window.config(background="#FFFFFF")
+        self.window.config(background = "#FFFFFF")
+        self.create_menu_bar()
 
-        self.frame = tk.Frame(self.window, bg="#FFFFFF")
-        self.frame.pack(expand=True)
+        #Crée la fenêtre initiale
+        self.frame = tk.Frame(self.window, bg = "#FFFFFF")
+        self.frame.pack(expand = True)
 
-        self.label = tk.Label(self.frame, text="Space Invaders", font=("Helvetica", 40), bg="#FFFFFF")
+        #Change le titre de la fenêtre
+        self.label = tk.Label(self.frame, text = "Space Invaders", font = ("Helvetica", 40), bg = "#FFFFFF")
         self.label.pack()
 
-        self.button = tk.Button(self.frame, text="Jouer", font=("Helvetica", 20), bg="#FFFFFF", command=self.play)
+        #Crée le bouton JOUER
+        self.button = tk.Button(self.frame, text = "Jouer", font=("Helvetica", 20), bg = "#FFFFFF", command = self.play)
         self.button.pack(pady=20)
 
-        self.button = tk.Button(self.frame, text="Quitter", font=("Helvetica", 20), bg="#FFFFFF", command=self.window.quit)
+        #Crée le bouton QUITTER
+        self.button = tk.Button(self.frame, text = "Quitter", font=("Helvetica", 20), bg = "#FFFFFF", command = self.window.quit)
         self.button.pack(pady=20)
+
+    #Création du menu
+    def create_menu_bar(self):
+        menu_bar = tk.Menu(self)
+        menu_game = tk.Menu(menu_bar, tearoff = 0)
+        menu_game.add_command(label = "Rejouer", command = self.play)
+        menu_game.add_command(label = "Quitter", command = self.window.quit)
+        menu_game.add_command(label = "A propos", command = self.about)
+
+    #Création du "A propos"
+    def about(self):
+        self.frame = tk.Frame(self.window, text="Jeu du Space Invaders \n Made by GRIMARD Valentin & SCHERDING Romain" , bg = "#FFFFFF")
+        self.frame.pack()
 
     def play(self):
         """
+        Fonction qui appelle la fonction create_dynamic_canvas lorsque l'utilisateur clique sur le bouton PLAY
         """
+        #Détruit les fenêtres existantes et crée la fenêtre de jeu
         self.frame.destroy()
-        self.frame = tk.Frame(self.window, bg="#FFFFFF")
+        self.frame = tk.Frame(self.window, bg = "#FFFFFF")
         self.frame.pack(expand=True)
 
-        self.dynamicFrame = tk.Frame(self.frame, bg="#FFFFFF")
+        #Crée la fenêtre dynamique dans laquelle on a le canvas (space invader)
+        self.dynamicFrame = tk.Frame(self.frame, bg = "#FFFFFF")
         self.create_dynamic_canvas()
-        self.dynamicFrame.pack(expand="YES", fill="both")
+        self.dynamicFrame.pack(expand = "YES", fill = "both")
+
+        #Crée la zone de texte indiquant le score actuel
+        self.score = tk.StringVar()
+        self.labelscore = tk.Label(self.dynamicFrame, textvariable = self.score, font = ("Helvetica", 10), bg = "#FFFFFF")
+        self.labelscore.pack()
 
     def create_dynamic_canvas(self):
         """
+        Fonction qui crée le canvas, dans lequel on va retrouver le space invader
         """
-        self.canvas = tk.Canvas(self.dynamicFrame, width=800, height=600, bg="#C8C8C8")
+        #Crée la fenêtre canvas de taille 800x600
+        self.canvas = tk.Canvas(self.dynamicFrame, width = 800, height = 600, bg = "#C8C8C8")
         self.canvas.pack()
+
+        #Crée le bouton JOUER
+        self.button = tk.Button(self.frame, text = "Jouer", font = ("Helvetica", 20), bg = "#FFFFFF", command = self.play)
+        self.button.pack(side = 'top' , padx = 20)
+
+        #Crée le bouton QUITTER
+        self.button = tk.Button(self.frame, text = "Quitter", font = ("Helvetica", 20), bg = "#FFFFFF", command = self.window.quit)
+        self.button.pack(side = 'top' , padx = 20)
 
 app = Screen()
 app.window.mainloop()
-
