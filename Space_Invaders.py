@@ -186,20 +186,20 @@ def Jeu():
     for i in Aliens:
         Canevas.delete(i)
     Canevas.create_image(0,0,anchor=NW,image=Fond)
-    Morts=0
-    Vies=3
+    Morts = 0
+    Vies = 3
     y.set("Vies restantes "+str(Vies))
     Score=0
     x.set("Score: "+str(Score))
     #Création Vaisseau
-    PosX=450
-    PosY=800
-    Vaisseau=Canevas.create_image(0,0,anchor=NW,image=Dab)
+    PosX = 450
+    PosY = 800
+    Vaisseau = Canevas.create_image(0,0,anchor=NW,image=Dab)
     Canevas.bin('1',Clavier)
     #Création Ilots de défense
-    Ilots=[]
-    XIlot=45
-    YIlot=600
+    Ilots = []
+    XIlot = 45
+    YIlot = 600
     for i in range (0,54):
         Ilots.append(CreationIlots(XIlot,YIlot))
         if XIlot==195 or XIlot==510:
@@ -317,7 +317,7 @@ LabelScore=Label(Mafenetre,textvariable=x,fg='black' bg='white')
 #Affichage vies
 y=StringVar()
 y.set(vies())
-LabelVies=Label(Mafenetre,textvariable=y,fg='balck' bg='white')
+LabelVies=Label(Mafenetre,textvariable=y,fg='balck bg='white')
 
 #Mise en page
 LabelScore.grid(row=1,column=1,sticky=W)
