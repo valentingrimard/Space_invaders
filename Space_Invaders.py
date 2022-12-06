@@ -300,7 +300,7 @@ Canevas.move(Alien,dX,dY)
 
 
 """"
-Programme Principale
+Programme Principal
 """
 
 #Création du bouton de jeu
@@ -317,7 +317,7 @@ LabelScore=Label(Mafenetre,textvariable=x,fg='black' bg='white')
 #Affichage vies
 y=StringVar()
 y.set(vies())
-LabelVies=Label(Mafenetre,textvariable=y,fg='balck bg='white')
+LabelVies=Label(Mafenetre,textvariable=y,fg='black' bg='white')
 
 #Mise en page
 LabelScore.grid(row=1,column=1,sticky=W)
