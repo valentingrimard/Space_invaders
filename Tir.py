@@ -10,5 +10,7 @@
 
 class Tir():
     """
+    Classe permettant de créer les tirs des aliens et du vaisseau
     """
     def __init__(self):
+        self.__vitesse = 30 # le tir se déplace à une vitesse de 30px par seconde 
