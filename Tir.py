@@ -8,8 +8,7 @@
 #####
 
 
-class Vaisseau():
+class Tir():
     """
     """
     def __init__(self):
-        

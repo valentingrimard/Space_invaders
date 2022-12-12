@@ -10,7 +10,7 @@
 import tkinter as tk
 
 
-class Screen():
+class Affichage():
     """
     Classe permettant de créer le canvas
     """
@@ -93,5 +93,5 @@ class Screen():
         self.button = tk.Button(self.frame, text = "Quitter", font = ("Helvetica", 20), bg = "#FFFFFF", command = self.window.quit)
         self.button.pack(side = 'top' , padx = 20)
 
-app = Screen()
+app = Affichage()
 app.window.mainloop()
