@@ -9,20 +9,6 @@
 
 import tkinter as tk
 
-#class Alien:
-#    """
-#    """
-#    def __init__(self):
-
-#class Vaisseau:
-#    """
-#    """
-#    def __init__(self):
-
-#class Collisions:
-#    """
-#    """
-#    def __init__(self):
 
 class Screen():
     """
