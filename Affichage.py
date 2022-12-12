@@ -75,7 +75,7 @@ class Affichage():
         #Crée la fenêtre dynamique dans laquelle on a le canvas (space invader)
         self.dynamicFrame = Frame(self.frame, bg = "#FFFFFF")
         self.create_dynamic_canvas()
-        self.dynamicFrame.pack(expand = "YES", fill = "both")
+        self.dynamicFrame.pack(expand = True, fill = "both")
 
         #Crée la zone de texte indiquant le score actuel
         self.score = StringVar()
@@ -98,20 +98,14 @@ class Affichage():
         self.button = Button(self.frame, text = "Quitter", font = ("Helvetica", 20), bg = "#FFFFFF", command = self.window.quit)
         self.button.pack(side = 'top' , padx = 20)
         
-        #Affiche le vaisseau
-        self.displayShip()
-
-    def displayShip(self):
-        """
-        Création du vaisseau
-        """
-        self.canvas = Canvas(self.dynamicFrame, width = 800, height = 600, bg = "#FFFFFF")
-        return self.canvas.create_oval(
-            cShip.getShipX(self)-cShip.getShipR(self),
-            cShip.getShipY(self)-cShip.getShipR(self),
-            cShip.getShipX(self)+cShip.getShipR(self),
-            cShip.getShipY(self)+cShip.getShipR(self),
-            outline='black',fill='white')
+        #Crée le vaisseau 
+        self.canvas.create_oval(380,550,420,590,outline = 'black',fill = 'white')
+        #    cShip.getShipX(self) - cShip.getShipR(self),
+        #    cShip.getShipY(self) - cShip.getShipR(self),
+        #    cShip.getShipX(self) + cShip.getShipR(self),
+        #    cShip.getShipY(self) + cShip.getShipR(self),
+        #    outline = 'black',fill = 'white')
+        self.canvas.pack(side = 'bottom', expand=True)
 
 
 app = Affichage()
