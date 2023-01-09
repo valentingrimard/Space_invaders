@@ -8,14 +8,13 @@
 #####
 
 
-class cAlien():
+class cProtection():
     """
     """
     def __init__(self):
-        self.__width = 60  # largeur de l'alien
-        self.__height = 40  # hauteur de l'alien
-        self.__speed = 
-
+        self.__width = 20  # largeur de la protection 
+        self.__height = 10  # hauteur de la protection
+        
     def getWidthA(self):
         return (self.__width)
 

@@ -25,3 +25,11 @@ class cShip():
 
     def getShipR(self):
         return self.__rayonS
+
+    def setShipX(self,valX):
+        self.__centreX = self.__centreX + valX
+
+    def setShipY(self,valY):
+        self.__centreY = self.__centreY + valY
+
+

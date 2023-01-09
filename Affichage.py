@@ -7,8 +7,16 @@
 
 #####
 
+#from shutil import move
+from random import randint
 from tkinter import Tk, Label, Button, StringVar, Frame, Canvas
 from Ship import cShip
+from Alien import cAlien
+from Protection import cProtection
+#from Space_Invaders import deplacement
+Ship = cShip()
+Alien = cAlien()
+Protection = cProtection()
 
 class Affichage():
     """
@@ -60,7 +68,12 @@ class Affichage():
     #Création du "A propos"
     def about(self):
         self.button.destroy()
-        self.button = Button(self.frame, text = "Jeu du Space Invaders \n Made by GRIMARD Valentin & SCHERDING Romain", font=("Helvetica", 20), bg = "#FFFFFF", command = self.button.destroy)
+        self.button = Button(
+            self.frame,
+            text = "Jeu du Space Invaders \n Made by GRIMARD Valentin & SCHERDING Romain",
+            font=("Helvetica", 20),
+            bg = "#FFFFFF",
+            command = self.button.destroy)
         self.button.pack()
 
     def play(self):
@@ -82,6 +95,23 @@ class Affichage():
         self.labelscore = Label(self.dynamicFrame, textvariable = self.score, font = ("Helvetica", 10), bg = "#FFFFFF")
         self.labelscore.pack()
 
+    def deplacement(self,event):
+        key = event.keysym            # à la variable "key" on associe un évènement du clavier 
+        if key == 'Right':            # si on appuie sur la flèche de droite
+            if Ship.getShipX() < 780: # si le coté droit du vaissseau n'a pas atteint le bord droit de la fenetre 
+                Ship.setShipX(9)      # on décale la position du centre du vaisseau vers la droite
+        if key == 'Left':             # si on appuie sur la flèche de gauche
+            if Ship.getShipX() > 20:  # si le coté gauche du vaissseau n'a pas atteint le bord gauche de la fenetre 
+                Ship.setShipX(-9)     # on décale la position du centre du vaisseau vers la gauche
+                    
+        self.canvas.coords(self.canvas.create_oval(
+        Ship.getShipX() - Ship.getShipR(),
+        Ship.getShipY() - Ship.getShipR(),
+        Ship.getShipX() + Ship.getShipR(),
+        Ship.getShipY() + Ship.getShipR(),
+        outline = 'black',
+        fill = 'white'))  # les coordonnées du vaisseau sont alors modifiées 
+
     def create_dynamic_canvas(self):
         """
         Fonction qui crée le canvas, dans lequel on va retrouver le space invader
@@ -98,48 +128,95 @@ class Affichage():
         self.button = Button(self.frame, text = "Quitter", font = ("Helvetica", 20), bg = "#FFFFFF", command = self.window.quit)
         self.button.pack(side = 'top' , padx = 20)
         
+
+    def Ship(self):   
         #Crée le vaisseau 
-        self.canvas.create_oval(380,550,420,590,outline = 'black',fill = 'white')
-        #    cShip.getShipX(self) - cShip.getShipR(self),
-        #    cShip.getShipY(self) - cShip.getShipR(self),
-        #    cShip.getShipX(self) + cShip.getShipR(self),
-        #    cShip.getShipY(self) + cShip.getShipR(self),
-        #    outline = 'black',fill = 'white')
+        self.canvas.create_oval(
+            Ship.getShipX() - Ship.getShipR(),
+            Ship.getShipY() - Ship.getShipR(),
+            Ship.getShipX() + Ship.getShipR(),
+            Ship.getShipY() + Ship.getShipR(),
+            outline = 'black',fill = 'green')
+        self.canvas.pack(side = 'bottom', expand = True)
+        #self.canvas.bind("<Key>",Affichage.deplacement())
+
+    #Crée les groupes d'aliens
+    def GroupeAlien(self):
+        global groupeAlien
+        listeAX = [0] #Liste des coordonnées du groupe d'alien en X
+        listeAY = [0] #Liste des coordonnées du groupe d'alien en Y
+        groupeAlien = []
+        for i in range(1,5):
+            for j in range(1,4):
+                listeAX[-1] = 20+(Alien.getWidthA()+20)*(i-1)
+                listeAY[-1] = 20+(Alien.getHeightA()+20)*(j-1)
+                groupeAlien.append(self.canvas.create_rectangle(
+                    listeAX[-1],
+                    listeAY[-1],
+                    listeAX[-1]+Alien.getWidthA(),
+                    listeAY[-1]+Alien.getHeightA(),
+                    outline = 'black',
+                    fill = 'blue'))
+                self.canvas.pack(side = 'top', expand = True)
+
+    #Déplacement des aliens
+
+    #Tir des aliens
+    def TirAliens(self,dy,speed):
+        global groupeAlien,MissileAlien
+        if randint(0,2) == 0:
+            groupeAlien = [ligne for ligne in groupeAlien if ligne]
+            alien_aleatoire = randint(0,len(groupeAlien))
+                
+            PosXalien0,PosYalien0,PosXalien1,PosYalien1 = self.canvas.coords(groupeAlien[alien_aleatoire])
+            MissileAlien = self.canvas.create_oval(
+                (PosXalien0+25)-5,
+                PosYalien0-5,
+                (PosXalien0+25)+5,
+                PosYalien0+5,
+                outline='black',
+                fill='yellow')
+            #updateTirAliens()
+        self.canvas.after(700, Affichage.TirAliens(self,-5,20))
+    
+    #Met à jour les tirs des aliens
+    def updateTirAliens(self):
+        global MissileAlien,groupeProtection
+        VarMa=10
+        Xma,Yma, Xmax, Ymay = self.canvas.coords(MissileAlien)
+        if Yma > 600:
+            self.canvas.delete(MissileAlien)
+        else :
+            for bloc in groupeProtection:
+                [Xb0,Yb0,Xb1,Yb1]= self.canvas.coords(bloc)  
+                if (Xb0)<(Xma)<(Xb1) and (Yb0)<(Yma)<(Yb1):
+                    print (Yb0)                
+                    self.canvas.delete(MissileAlien)
+                    self.canvas.delete(bloc)
+                    groupeProtection.remove(bloc)
+                
+            self.canvas.move(MissileAlien,0,VarMa)
+            self.canvas.after(15,Affichage.updateTirAliens(self)) # on rappelle la fonction updateTirAliens après 15ms
+
+    #Crée les protections 
+    def Protection(self):
+        global groupeProtection
+        listePX = [0] #Liste des coordonnées des protections en X
+        listePY = [0] #Liste des coordonnées des protections en Y
+        groupeProtection = []
+        for i in range(1,15):
+            for j in range(1,4):
+                listePX[-1] = 20+(Protection.getWidthA()+45)*(i-1)
+                listePY[-1] = 400+(Protection.getHeightA())*(j-1)
+                groupeProtection.append(self.canvas.create_rectangle(
+                    listePX[-1],
+                    listePY[-1],
+                    listePX[-1]+Protection.getWidthA(),
+                    listePY[-1]+Protection.getHeightA(),
+                    outline = 'black',
+                    fill = 'grey'))
         self.canvas.pack(side = 'bottom', expand = True)
 
-        #Crée les aliens
-        self.canvas.create_rectangle(20,20,80,60,outline = 'black', fill = 'blue')
-        self.canvas.pack(side = 'top', expand = True)
-
-    def move(self,event):
-        key = event.keysym  # a la variable "touche" on associe un evenement du clavier 
-        if key == 'Right':  # si on appuie sur fleche de droite
-            if cShip.getShipX(self) < 780: # si le coté droit du vaissseau n'a pas atteint le bord droit de la fenetre 
-                cShip.getShipX(self) += 9  # on décale la position du centre du vaisseau vers la droite
-        if key == 'Left':  # si on appuie sur fleche de droite
-            if cShip.getShipX(self) > 20:  # si le coté gauche du vaissseau n'a pas atteint le bord gauche de la fenetre 
-                cShip.getShipX(self) -= 9  # on décale la position du centre du vaisseau vers la gauche
-                
-        self.canvas.coords(self.canvas.create_oval(380,550,420,590,outline = 'black',fill = 'white'),
-        cShip.getShipX(self) - cShip.getShipR(self),
-        cShip.getShipY(self) - cShip.getShipR(self),
-        cShip.getShipX(self) + cShip.getShipR(self),
-        cShip.getShipY(self) + cShip.getShipR(self))  # les coordonnes du vaisseau sont alors modifiées
-
-    def move(self,event):
-        key=event.keysym  # a la variable "touche" on associe un evenement du clavier 
-        if key=='Right':  # si on appuie sur fleche de droite
-            if cShip.getShipX(self) < 780: # si le coté droit du vaissseau n'a pas atteint le bord droit de la fenetre 
-                cShip.getShipX(self) += 9  # on décale la position du centre du vaisseau vers la droite
-        if key=='Left':  # si on appuie sur fleche de droite
-            if cShip.getShipX(self) > 20:  # si le coté gauche du vaissseau n'a pas atteint le bord gauche de la fenetre 
-                cShip.getShipX(self) -= 9  # on décale la position du centre du vaisseau vers la gauche
-                
-        self.canvas.coords(self.canvas.create_oval(380,550,420,590,outline = 'black',fill = 'white'),
-        cShip.getShipX(self) - cShip.getShipR(self),
-        cShip.getShipY(self) - cShip.getShipR(self),
-        cShip.getShipX(self) + cShip.getShipR(self),
-        cShip.getShipY(self) + cShip.getShipR(self))  # les coordonnes du vaisseau sont alors modifiées
 
 
 app = Affichage()

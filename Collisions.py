@@ -8,7 +8,8 @@
 #####
 
 
-class Collisions():
+class cCollisions():
     """
     """
     def __init__(self):
+        
