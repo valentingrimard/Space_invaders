@@ -12,12 +12,11 @@ class cShip():
     """
     Classe permettant de créer le vaisseau
     """
-    def __init__(self,centreX,centreY,rayonS):
-        self.__centreX = centreX  # centre du vaisseau en x (430)
-        self.__centreY = centreY  # centre du vaisseau en y (470)
-        self.__rayonS = rayonS    # rayon du vaisseau (15)
+    def __init__(self):
+        self.__centreX = 400  # centre du vaisseau en x 
+        self.__centreY = 570  # centre du vaisseau en y 
+        self.__rayonS = 20    # rayon du vaisseau 
         
-
     def getShipX(self):
         return self.__centreX
 

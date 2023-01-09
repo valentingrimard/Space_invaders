@@ -105,7 +105,26 @@ class Affichage():
         #    cShip.getShipX(self) + cShip.getShipR(self),
         #    cShip.getShipY(self) + cShip.getShipR(self),
         #    outline = 'black',fill = 'white')
-        self.canvas.pack(side = 'bottom', expand=True)
+        self.canvas.pack(side = 'bottom', expand = True)
+
+        #Crée les aliens
+        self.canvas.create_rectangle(20,20,80,60,outline = 'black', fill = 'blue')
+        self.canvas.pack(side = 'top', expand = True)
+
+    def move(self,event):
+        key = event.keysym  # a la variable "touche" on associe un evenement du clavier 
+        if key == 'Right':  # si on appuie sur fleche de droite
+            if cShip.getShipX(self) < 780: # si le coté droit du vaissseau n'a pas atteint le bord droit de la fenetre 
+                cShip.getShipX(self) += 9  # on décale la position du centre du vaisseau vers la droite
+        if key == 'Left':  # si on appuie sur fleche de droite
+            if cShip.getShipX(self) > 20:  # si le coté gauche du vaissseau n'a pas atteint le bord gauche de la fenetre 
+                cShip.getShipX(self) -= 9  # on décale la position du centre du vaisseau vers la gauche
+                
+        self.canvas.coords(self.canvas.create_oval(380,550,420,590,outline = 'black',fill = 'white'),
+        cShip.getShipX(self) - cShip.getShipR(self),
+        cShip.getShipY(self) - cShip.getShipR(self),
+        cShip.getShipX(self) + cShip.getShipR(self),
+        cShip.getShipY(self) + cShip.getShipR(self))  # les coordonnes du vaisseau sont alors modifiées
 
 
 app = Affichage()
