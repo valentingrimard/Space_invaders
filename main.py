@@ -46,6 +46,11 @@ def Points(val):
     score.config(text='Score: '+str(Score))
 
 def newGame():
+    '''
+    Fonction qui crée la partie
+    Entrée : Rien
+    Sortie : la liste : enemy
+    '''
     global enemy
     canvas.grid()
     canvas.create_image(0,0,anchor='nw',image=imageBackground)
@@ -70,6 +75,9 @@ def newGame():
     return enemy
 
 def Win():
+    '''
+    Fonction qui détecte si la partie est gagné
+    '''
     global Ingame,GameLost
     win = True 
     for i in enemy:
@@ -89,6 +97,9 @@ def Win():
 
 
 def Lose():
+    '''
+    Fonction qui détecte si la partie est perdue
+    '''
     global Ingame,GameLost
     canvas.grid_remove()
     winlose.config(text='Perdu !!')
@@ -102,6 +113,9 @@ def Lose():
     GameLost = True
 
 def MouvementAlien():
+    '''
+    Fonction qui permet aux aliens de se déplacer
+    '''
     global enemy
     if Ingame:
         L=[i.vivant for i in enemy]
@@ -109,7 +123,7 @@ def MouvementAlien():
             i=L.index(True)
             L.reverse()
             j=L.index(True)
-            if (enemy[-j-1].cTirAlien.getX + cAlien.getWidthA >= 480 and Alien.dir == 1) or (enemy[i].cTirAlien.getX - cAlien.getWidthA <= 0 and Alien.dir == -1):
+            if (enemy[-j-1].cTirAlien.getX + cAlien.getWidthA >= 480 and cAlien.getDirA == 1) or (enemy[i].cTirAlien.getX - cAlien.getWidthA <= 0 and cAlien.getDirA == -1):
                 cAlien.setDirA(-1)
                 cAlien.setY(10)
                 if cAlien.getY + cAlien.getHeightA/2 >= cProtections.getY:
@@ -120,12 +134,18 @@ def MouvementAlien():
             mw.after(5,MouvementAlien)
 
 def DelTirs():
+    '''
+    Fonction qui supprime les tirs lorsqu'ils dépassent le cadre de l'écran
+    '''
     for i in cTir.listeTirs:
         i.cTir.getTir = False
     for i in cTirAlien.listeTirsA:
         i.cTirAlien.getTirA = False
 
 def Tir_Alien():
+    '''
+    Fonction qui génère les tirs des aliens aléatoirement
+    '''
     global enemy
     if Ingame:
         L = [i.vivant for i in enemy]
@@ -137,9 +157,15 @@ def Tir_Alien():
             mw.after(1,Tir_Alien)
 
 def LifeDisplay(life):
+    '''
+    Fonction qui affiche le nombre de vie 
+    '''
     NbVies.config(text='Vies: '+str(life))
 
 def Clavier(event):
+    '''
+    Fonction qui permet au joueur de se déplacer
+    '''
     global TempsTir
     touche = event.keysym
     if touche == 'q' or touche == 'Left':
